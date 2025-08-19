@@ -1,14 +1,14 @@
 {
-  "$schema": "https://moonlight-mod.github.io/manifest.schema.json",
-  "id": "freeMoji",
-  "version": "1.0.3",
-  "apiLevel": 2,
-  "meta": {
-    "name": "Freemoji",
-    "tagline": "Free Nitro emoji!",
-    "description": "Sends external emoji as image URLs instead. Based on the Vendetta extension by @maisymoe",
-    "authors": ["uwx", "maisymoe"],
-    "source": "https://github.com/uwx/moonlight-extensions"
-  },
-  "dependencies": ["spacepack"]
+    "$schema": "https://moonlight-mod.github.io/manifest.schema.json",
+    "id": "freeMoji",
+    "version": "1.0.3",
+    "apiLevel": 2,
+    "meta": {
+        "name": "Freemoji",
+        "tagline": "Free Nitro emoji!",
+        "description": "Sends external emoji as image URLs instead. Based on the Vendetta extension by @maisymoe",
+        "authors": ["uwx", "maisymoe"],
+        "source": "https://github.com/uwx/moonlight-extensions"
+    },
+    "dependencies": ["spacepack", "markdown"]
 }
