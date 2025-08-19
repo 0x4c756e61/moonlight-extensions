@@ -23,39 +23,34 @@ module.Z.sendMessage = async (...args: any[]) => {
 const hasEmotesRegex = /<a?:(\w+):(\d+)>/i;
 
 function extractUnusableEmojis(messageString: string, size: number) {
-	const emojiStrings = messageString.matchAll(/<a?:(\w+):(\d+)>/gi);
-	const emojiUrls = [];
+    const emojiStrings = messageString.matchAll(/<a?:(\w+):(\d+)>/gi);
 
-	for (const emojiString of emojiStrings) {
-		// Fetch required info about the emoji
-		const emoji = EmojiStore.getCustomEmojiById(emojiString[2]);
+    for (const emojiString of emojiStrings) {
+        // Fetch required info about the emoji
+        const emoji = EmojiStore.getCustomEmojiById(emojiString[2]);
 
-		// Check emoji usability
-		if (
-			emoji.guildId !== SelectedGuildStore.getGuildId() ||
-			emoji.animated
-		) {
-			// Remove emote from original msg
-			messageString = messageString.replace(emojiString[0], "");
-			// Add to emotes to send
-            
-			emojiUrls.push(`https://cdn.discordapp.com/emojis/${emoji.id}.webp?size=48${emoji.animated ? '&animated=true' : ''}`);
-		}
-	}
+        // Check emoji usability
+        if (emoji.guildId !== SelectedGuildStore.getGuildId() || emoji.animated) {
+            // Replace the discord emoji format with the corresponding emoji url
+            messageString = messageString.replace(
+                emojiString[0],
+                `[${emoji.allNamesString.replace(":", "")}](https://cdn.discordapp.com/emojis/${emoji.id}.webp?size=48${emoji.animated ? "&animated=true" : ""})`
+            );
+        }
+    }
 
-	return { 
-        newContent: messageString.trim(),
-        extractedEmojis: emojiUrls,
+    return {
+        newContent: messageString.trim()
     };
 }
 
 export default function modifyIfNeeded(msg: Message) {
-	if (!msg.content.match(hasEmotesRegex)) return;
+    if (!msg.content.match(hasEmotesRegex)) return;
 
-	// Find all emojis from the captured message string and return object with emojiURLS and content
-	const { newContent, extractedEmojis } = extractUnusableEmojis(msg.content, 48);
+    // Find all emojis from the captured message string and return object with emojiURLS and content
+    const { newContent } = extractUnusableEmojis(msg.content, 48);
 
-	msg.content = newContent;
+    msg.content = newContent;
 
     // Set invalidEmojis to empty to prevent Discord yelling to you about you not having nitro
     msg.invalidEmojis = [];
